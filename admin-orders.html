@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders | BariraCart Admin</title>
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background:
+        radial-gradient(circle at top right, rgba(99,102,241,0.12), transparent 35%),
+        radial-gradient(circle at bottom left, rgba(168,85,247,0.10), transparent 35%),
+        #070b17;
+
+    color: #f8fafc;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 250px;
+    height: 100vh;
+
+    background:
+        linear-gradient(180deg, #0b1020, #080c18);
+
+    color: white;
+
+    padding: 25px 18px;
+
+    border-right: 1px solid rgba(148,163,184,0.12);
+
+    box-shadow: 10px 0 40px rgba(0,0,0,0.25);
+
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+
+    margin-bottom: 40px;
+
+    color: #8b5cf6;
+
+    letter-spacing: 0.5px;
+}
+
+.logo span {
+    color: white;
+}
+
+.menu-title {
+    font-size: 11px;
+
+    color: #64748b;
+
+    margin: 20px 10px 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+}
+
+.nav-link {
+    display: block;
+
+    padding: 13px 15px;
+
+    margin-bottom: 7px;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+    background: rgba(139,92,246,0.10);
+
+    color: #c4b5fd;
+
+    transform: translateX(3px);
+}
+
+.nav-link.active {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124,58,237,0.25),
+            rgba(59,130,246,0.12)
+        );
+
+    color: #c4b5fd;
+
+    border: 1px solid rgba(139,92,246,0.20);
+
+    box-shadow:
+        0 8px 25px rgba(124,58,237,0.10);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    margin-left: 250px;
+
+    padding: 35px;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 30px;
+
+    color: #f8fafc;
+
+    letter-spacing: -0.5px;
+}
+
+.topbar p {
+    color: #64748b;
+
+    margin-top: 7px;
+
+    font-size: 14px;
+}
+
+.back-btn {
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+
+    color: white;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 8px 25px rgba(79,70,229,0.20);
+
+    transition: all 0.25s ease;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(79,70,229,0.30);
+}
+
+
+/* =========================
+   FILTER AREA
+========================= */
+
+.filter-box {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,24,39,0.96),
+            rgba(15,23,42,0.96)
+        );
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+    border: 1px solid rgba(148,163,184,0.10);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.25);
+}
+
+.search {
+    flex: 1;
+
+    padding: 13px 15px;
+
+    border: 1px solid #273449;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    background: #0b1220;
+
+    color: #f8fafc;
+
+    transition: 0.25s;
+}
+
+.search::placeholder {
+    color: #64748b;
+}
+
+.search:focus {
+    border-color: #8b5cf6;
+
+    box-shadow:
+        0 0 0 3px rgba(139,92,246,0.10);
+}
+
+.filter {
+    padding: 13px 15px;
+
+    border: 1px solid #273449;
+
+    border-radius: 10px;
+
+    background: #0b1220;
+
+    color: #e2e8f0;
+
+    outline: none;
+
+    cursor: pointer;
+
+    min-width: 150px;
+}
+
+.filter:focus {
+    border-color: #8b5cf6;
+}
+
+.filter option {
+    background: #0b1220;
+
+    color: white;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.table-container {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,24,39,0.98),
+            rgba(11,18,32,0.98)
+        );
+
+    border-radius: 16px;
+
+    overflow-x: auto;
+
+    border: 1px solid rgba(148,163,184,0.10);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.30);
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 800px;
+}
+
+th {
+    background:
+        rgba(30,41,59,0.55);
+
+    padding: 17px 16px;
+
+    text-align: left;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+
+    border-bottom: 1px solid #263247;
+}
+
+td {
+    padding: 18px 16px;
+
+    border-top: 1px solid rgba(51,65,85,0.45);
+
+    font-size: 14px;
+
+    color: #cbd5e1;
+}
+
+tr {
+    transition: background 0.2s ease;
+}
+
+tr:hover {
+    background:
+        rgba(99,102,241,0.06);
+}
+
+td strong {
+    color: #f8fafc;
+}
+
+
+/* =========================
+   ORDER ID
+========================= */
+
+td a {
+    color: #a78bfa !important;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+td a:hover {
+    color: #c4b5fd !important;
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    border: 1px solid transparent;
+}
+
+.pending {
+    background: rgba(245,158,11,0.12);
+
+    color: #fbbf24;
+
+    border-color: rgba(245,158,11,0.20);
+}
+
+.processing {
+    background: rgba(59,130,246,0.12);
+
+    color: #60a5fa;
+
+    border-color: rgba(59,130,246,0.20);
+}
+
+.shipped {
+    background: rgba(139,92,246,0.12);
+
+    color: #a78bfa;
+
+    border-color: rgba(139,92,246,0.20);
+}
+
+.delivered {
+    background: rgba(34,197,94,0.12);
+
+    color: #4ade80;
+
+    border-color: rgba(34,197,94,0.20);
+}
+
+
+/* =========================
+   STATUS SELECT
+========================= */
+
+.status-select {
+    padding: 8px 10px;
+
+    border: 1px solid #334155;
+
+    border-radius: 8px;
+
+    background: #0b1220;
+
+    color: #e2e8f0;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.status-select:hover {
+    border-color: #6366f1;
+}
+
+.status-select:focus {
+    border-color: #8b5cf6;
+
+    box-shadow:
+        0 0 0 3px rgba(139,92,246,0.10);
+}
+
+.status-select option {
+    background: #0b1220;
+
+    color: white;
+}
+
+
+/* =========================
+   EMPTY / LOADING
+========================= */
+
+.empty {
+    text-align: center;
+
+    padding: 60px !important;
+
+    color: #64748b;
+
+    background: transparent;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #080d18;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #334155;
+
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 800px) {
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .main {
+        margin-left: 200px;
+
+        padding: 20px;
+    }
+
+    .filter-box {
+        flex-direction: column;
+    }
+
+    .filter {
+        width: 100%;
+    }
+
+    .topbar {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            BARIRA<span>CART</span>
+        </div>
+
+        <div class="menu-title">
+            MAIN
+        </div>
+
+        <a href="admin-dashboard.html" class="nav-link">
+            📊 Dashboard
+        </a>
+
+        <a href="admin-orders.html" class="nav-link active">
+            📦 Orders
+        </a>
+
+        <a href="#" class="nav-link">
+            🛍️ Products
+        </a>
+
+        <a href="#" class="nav-link">
+            👥 Customers
+        </a>
+
+        <div class="menu-title">
+            SYSTEM
+        </div>
+
+        <a href="#" class="nav-link">
+            📈 Analytics
+        </a>
+
+        <a href="admin-login.html" class="nav-link">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Order Management
+                </h1>
+
+                <p>
+                    Manage and track BariraCart orders
+                </p>
+
+            </div>
+
+            <a
+                href="admin-dashboard.html"
+                class="back-btn"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <div class="filter-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search"
+                placeholder="🔍 Search by order ID or customer..."
+            >
+
+            <select
+                id="statusFilter"
+                class="filter"
+            >
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Processing">
+                    Processing
+                </option>
+
+                <option value="Shipped">
+                    Shipped
+                </option>
+
+                <option value="Delivered">
+                    Delivered
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ORDERS TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Order
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Update
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="ordersTable">
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="empty"
+                        >
+                            Loading orders...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        let allOrders = [];
+
+
+        // ==========================================
+        // CHECK ADMIN SESSION
+        // ==========================================
+
+        async function checkAdmin() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admin/check",
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "ADMIN CHECK:",
+                    data
+                );
+
+                if (!data.loggedIn) {
+
+                    window.location.href =
+                        "/admin-login.html";
+
+                    return false;
+                }
+
+                return true;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Admin check error:",
+                    error
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // LOAD ORDERS
+        // ==========================================
+
+        async function loadOrders() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admin/all-orders",
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "ALL ORDERS:",
+                    data
+                );
+
+                if (!data.success) {
+
+                    document.getElementById(
+                        "ordersTable"
+                    ).innerHTML = `
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="empty"
+                            >
+                                ${data.message || "Unable to load orders"}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+                allOrders =
+                    data.orders || [];
+
+                displayOrders(
+                    allOrders
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Load orders error:",
+                    error
+                );
+
+                document.getElementById(
+                    "ordersTable"
+                ).innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="empty"
+                        >
+                            Server error while loading orders.
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+        // ==========================================
+        // DISPLAY ORDERS
+        // ==========================================
+
+        function displayOrders(
+            orders
+        ) {
+
+            const table =
+                document.getElementById(
+                    "ordersTable"
+                );
+
+            if (
+                !orders ||
+                orders.length === 0
+            ) {
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="empty"
+                        >
+                            No orders found.
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+            table.innerHTML = "";
+
+
+            orders.forEach(
+                order => {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const status =
+                        order.status ||
+                        "Pending";
+
+
+                    const statusClass =
+                        status
+                            .toLowerCase()
+                            .replace(
+                                " ",
+                                ""
+                            );
+
+
+                    row.innerHTML = `
+
+                       <td>
+    <a
+        href="admin-order-details.html?id=${order.id}"
+        style="
+            color:#2563eb;
+            font-weight:700;
+            text-decoration:none;
+        "
+    >
+        #${order.id}
+    </a>
+</td>
+
+                        <td>
+                            ${order.name || "Unknown"}
+                        </td>
+
+                        <td>
+                            ${order.email || "-"}
+                        </td>
+
+                        <td>
+                            <strong>
+                                Rs.
+                                ${Number(
+                                    order.total_amount
+                                ).toLocaleString()}
+                            </strong>
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status ${statusClass}"
+                            >
+                                ${status}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <select
+                                class="status-select"
+                                onchange="updateOrderStatus(
+                                    ${order.id},
+                                    this.value
+                                )"
+                            >
+
+                                <option
+                                    value="Pending"
+                                    ${status === "Pending" ? "selected" : ""}
+                                >
+                                    Pending
+                                </option>
+
+                                <option
+                                    value="Processing"
+                                    ${status === "Processing" ? "selected" : ""}
+                                >
+                                    Processing
+                                </option>
+
+                                <option
+                                    value="Shipped"
+                                    ${status === "Shipped" ? "selected" : ""}
+                                >
+                                    Shipped
+                                </option>
+
+                                <option
+                                    value="Delivered"
+                                    ${status === "Delivered" ? "selected" : ""}
+                                >
+                                    Delivered
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                    `;
+
+
+                    table.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // UPDATE ORDER STATUS
+        // ==========================================
+
+        async function updateOrderStatus(
+            orderId,
+            newStatus
+        ) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/admin/orders/${orderId}/status`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            credentials: "include",
+
+                            body: JSON.stringify({
+                                status:
+                                    newStatus
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!data.success) {
+
+                    alert(
+                        data.message ||
+                        "Failed to update order."
+                    );
+
+                    loadOrders();
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "ORDER UPDATED:",
+                    data
+                );
+
+
+                alert(
+                    `Order #${orderId} updated to ${newStatus}`
+                );
+
+
+                loadOrders();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Update status error:",
+                    error
+                );
+
+                alert(
+                    "Server error while updating order."
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // SEARCH + FILTER
+        // ==========================================
+
+        function filterOrders() {
+
+            const search =
+                document
+                    .getElementById(
+                        "searchInput"
+                    )
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+
+            const status =
+                document
+                    .getElementById(
+                        "statusFilter"
+                    )
+                    .value;
+
+
+            const filtered =
+                allOrders.filter(
+                    order => {
+
+                        const matchesSearch =
+                            String(
+                                order.id
+                            )
+                            .includes(
+                                search
+                            )
+
+                            ||
+
+                            String(
+                                order.name || ""
+                            )
+                            .toLowerCase()
+                            .includes(
+                                search
+                            );
+
+
+                        const matchesStatus =
+                            status === "all"
+                            ||
+                            order.status ===
+                            status;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesStatus
+                        );
+
+                    }
+                );
+
+
+            displayOrders(
+                filtered
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .addEventListener(
+                "input",
+                filterOrders
+            );
+
+
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .addEventListener(
+                "change",
+                filterOrders
+            );
+
+
+        // ==========================================
+        // START
+        // ==========================================
+
+        async function startOrdersPage() {
+
+            const loggedIn =
+                await checkAdmin();
+
+            if (!loggedIn) {
+                return;
+            }
+
+            loadOrders();
+
+        }
+
+
+        startOrdersPage();
+
+    </script>
+
+</body>
+</html>

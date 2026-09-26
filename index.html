@@ -1,0 +1,543 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BariraCart | Smart Tech Shopping</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <span>BARIRA</span>
+            <strong>CART</strong>
+        </div>
+
+
+        <nav>
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#products">
+                Products
+            </a>
+
+            <a href="#categories">
+                Categories
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+            >
+
+                🛒
+
+                <span id="cart-count">
+                    0
+                </span>
+
+            </button>
+
+
+        <button
+    class="login-btn"
+    onclick="window.location.href='admin-login.html'"
+>
+    Login
+</button>
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <!-- ================= HERO ================= -->
+
+        <section
+            class="hero"
+            id="home"
+        >
+
+            <div class="hero-content">
+
+                <p class="hero-tag">
+                    ⚡ NEXT-GEN TECH STORE
+                </p>
+
+
+                <h1>
+                    Technology
+                    <span>That Fits</span>
+                    Your World.
+                </h1>
+
+
+                <p class="hero-description">
+
+                    Discover smart gadgets,
+                    gaming gear and everyday
+                    tech accessories designed
+                    to upgrade your setup.
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="#products"
+                        class="primary-btn"
+                    >
+                        Explore Products →
+                    </a>
+
+
+                    <a
+                        href="#categories"
+                        class="secondary-btn"
+                    >
+                        View Categories
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HERO VISUAL -->
+
+            <div class="hero-visual">
+
+                <div class="floating-card card-one">
+                    🎧
+                </div>
+
+                <div class="floating-card card-two">
+                    💻
+                </div>
+
+                <div class="floating-card card-three">
+                    ⚡
+                </div>
+
+
+                <div class="hero-circle">
+
+                    <span>
+                        BC
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <span>
+                    🔍
+                </span>
+
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search products..."
+                    oninput="searchProducts()"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <section
+            class="categories"
+            id="categories"
+        >
+
+            <div class="section-heading">
+
+                <p>
+                    EXPLORE
+                </p>
+
+                <h2>
+                    Shop by Category
+                </h2>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <button
+                    onclick="filterCategory('All')"
+                >
+
+                    <span>
+                        ✨
+                    </span>
+
+                    <b>
+                        All Products
+                    </b>
+
+                </button>
+
+
+                <button
+                    onclick="filterCategory('Audio')"
+                >
+
+                    <span>
+                        🎧
+                    </span>
+
+                    <b>
+                        Audio
+                    </b>
+
+                </button>
+
+
+                <button
+                    onclick="filterCategory('Gaming')"
+                >
+
+                    <span>
+                        🎮
+                    </span>
+
+                    <b>
+                        Gaming
+                    </b>
+
+                </button>
+
+
+                <button
+                    onclick="filterCategory('Accessories')"
+                >
+
+                    <span>
+                        🔌
+                    </span>
+
+                    <b>
+                        Accessories
+                    </b>
+
+                </button>
+
+
+                <button
+                    onclick="filterCategory('Workspace')"
+                >
+
+                    <span>
+                        💻
+                    </span>
+
+                    <b>
+                        Workspace
+                    </b>
+
+                </button>
+
+
+                <button
+                    onclick="filterCategory('Mobile Accessories')"
+                >
+
+                    <span>
+                        📱
+                    </span>
+
+                    <b>
+                        Mobile
+                    </b>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <section
+            class="products-section"
+            id="products"
+        >
+
+
+            <div class="section-heading product-heading">
+
+
+                <div>
+
+                    <p>
+                        OUR COLLECTION
+                    </p>
+
+                    <h2>
+                        Featured Tech
+                    </h2>
+
+                </div>
+
+
+                <span id="product-status">
+                    Loading products...
+                </span>
+
+
+            </div>
+
+
+
+            <!-- PRODUCTS FROM MYSQL -->
+
+            <div
+                id="product-container"
+                class="product-grid"
+            >
+
+                <!-- Products will appear here -->
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section
+            class="about"
+            id="about"
+        >
+
+            <div>
+
+                <p>
+                    WHY BARIRACART?
+                </p>
+
+
+                <h2>
+
+                    Your everyday technology,
+
+                    <span>
+                        in one place.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    BariraCart is a full-stack
+                    e-commerce project built
+                    with modern web technologies.
+
+                    Browse products, manage your
+                    cart and experience a complete
+                    online shopping workflow.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="about-stats">
+
+
+                <div>
+
+                    <strong>
+                        15+
+                    </strong>
+
+                    <span>
+                        Products
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        24/7
+                    </strong>
+
+                    <span>
+                        Shopping
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        Responsive
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="logo">
+
+            <span>
+                BARIRA
+            </span>
+
+            <strong>
+                CART
+            </strong>
+
+        </div>
+
+
+        <p>
+
+            © 2026 BariraCart.
+            Built as a full-stack
+            development project.
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- ================= CART PANEL ================= -->
+
+    <div
+        id="cart-panel"
+        class="cart-panel"
+    >
+
+
+        <div class="cart-header">
+
+            <h2>
+                Your Cart
+            </h2>
+
+
+            <button
+                onclick="closeCart()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div id="cart-items">
+
+            <p class="empty-cart">
+                Your cart is empty.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
+```

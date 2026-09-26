@@ -1,0 +1,855 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Details | BariraCart Admin</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(99,102,241,0.18), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(168,85,247,0.12), transparent 35%),
+                #070b17;
+            color: #f8fafc;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            padding: 28px 18px;
+            background: linear-gradient(180deg, #0f172a, #080d1a);
+            border-right: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #94a3b8;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            transition: 0.25s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            background: rgba(139,92,246,0.16);
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .topbar p {
+            color: #94a3b8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 18px;
+            border-radius: 10px;
+            transition: 0.25s;
+        }
+
+        .back-btn:hover {
+            background: #334155;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        #content {
+            display: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.88);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #94a3b8;
+        }
+
+        .value {
+            color: #f8fafc;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .status-select {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: #111827;
+            color: white;
+            outline: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .status-select:focus {
+            border-color: #8b5cf6;
+        }
+
+        .address {
+            background: #0b1220;
+            padding: 16px;
+            border-radius: 12px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .products-card {
+            margin-bottom: 22px;
+        }
+
+        .product {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 17px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .product:last-child {
+            border-bottom: none;
+        }
+
+        .product-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .product-meta {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .total-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .total-box span {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .total-box strong {
+            font-size: 26px;
+            color: #a78bfa;
+        }
+
+        #error {
+            display: none;
+            text-align: center;
+            background: rgba(127,29,29,0.2);
+            border: 1px solid rgba(248,113,113,0.3);
+            color: #fca5a5;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+
+            .logo {
+                margin-bottom: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 22px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .main {
+                padding: 16px;
+            }
+
+            .topbar h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .value {
+                text-align: left;
+            }
+
+            .product {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            BARIRA<span>CART</span>
+        </div>
+
+        <a href="admin-dashboard.html" class="nav-link">
+            📊 Dashboard
+        </a>
+
+        <a href="admin-orders.html" class="nav-link active">
+            📦 Orders
+        </a>
+
+        <a href="admin-products.html" class="nav-link">
+            🛍️ Products
+        </a>
+
+        <a href="index.html" class="nav-link">
+            🏠 Store
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1 id="pageTitle">Order Details</h1>
+                <p>View customer and order information</p>
+            </div>
+
+            <a href="admin-orders.html" class="back-btn">
+                ← Back to Orders
+            </a>
+
+        </div>
+
+
+        <div id="loading">
+            Loading order...
+        </div>
+
+
+        <div id="error"></div>
+
+
+        <div id="content">
+
+            <!-- CUSTOMER + ORDER INFORMATION -->
+            <div class="grid">
+
+                <div class="card">
+
+                    <h2>👤 Customer Information</h2>
+
+                    <div class="info-row">
+                        <span class="label">Name</span>
+                        <span class="value" id="customerName">—</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <span class="value" id="customerEmail">—</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">User ID</span>
+                        <span class="value" id="userId">—</span>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h2>📋 Order Information</h2>
+
+                    <div class="info-row">
+                        <span class="label">Order ID</span>
+                        <span class="value" id="orderIdDisplay">—</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Date</span>
+                        <span class="value" id="orderDate">—</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Status</span>
+                        <span class="value">
+                            <select
+                                id="statusSelect"
+                                class="status-select"
+                                onchange="updateStatus(this.value)"
+                            >
+                                <option value="Pending">Pending</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SHIPPING -->
+            <div class="card products-card">
+
+                <h2>📍 Shipping Address</h2>
+
+                <div class="address" id="shippingAddress">
+                    —
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCTS -->
+            <div class="card products-card">
+
+                <h2>🛍️ Ordered Products</h2>
+
+                <div id="productsList"></div>
+
+                <div class="total-box">
+
+                    <span>Order Total</span>
+
+                    <strong id="orderTotal">
+                        Rs. 0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // ==========================================
+        // GET ORDER ID FROM URL
+        // ==========================================
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const orderId =
+            urlParams.get("id");
+
+
+        // ==========================================
+        // CHECK ADMIN LOGIN
+        // ==========================================
+
+        async function checkAdmin() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admin/check",
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                if (!data.loggedIn) {
+
+                    window.location.href =
+                        "admin-login.html";
+
+                    return false;
+                }
+
+                return true;
+
+            } catch (error) {
+
+                console.error(
+                    "Admin check error:",
+                    error
+                );
+
+                return false;
+            }
+        }
+
+
+        // ==========================================
+        // SHOW ERROR
+        // ==========================================
+
+        function showError(message) {
+
+            document.getElementById(
+                "loading"
+            ).style.display = "none";
+
+            const errorBox =
+                document.getElementById("error");
+
+            errorBox.style.display = "block";
+
+            errorBox.innerHTML =
+                "❌ " + message;
+        }
+
+
+        // ==========================================
+        // LOAD ORDER
+        // ==========================================
+
+        async function loadOrder() {
+
+            if (!orderId) {
+
+                showError(
+                    "No order ID was provided."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/admin/orders/${orderId}`,
+                        {
+                            credentials: "include"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "ORDER DETAILS:",
+                    data
+                );
+
+
+                if (!response.ok || !data.success) {
+
+                    showError(
+                        data.message ||
+                        "Order not found."
+                    );
+
+                    return;
+                }
+
+
+                renderOrder(data);
+
+            } catch (error) {
+
+                console.error(
+                    "Load order error:",
+                    error
+                );
+
+                showError(
+                    "Server error while loading order."
+                );
+            }
+        }
+
+
+        // ==========================================
+        // RENDER ORDER
+        // ==========================================
+
+        function renderOrder(data) {
+
+            const order =
+                data.order;
+
+            const items =
+                data.items || [];
+
+
+            // PAGE TITLE
+
+            document.getElementById(
+                "pageTitle"
+            ).textContent =
+                `Order #${order.id}`;
+
+
+            // CUSTOMER
+
+            document.getElementById(
+                "customerName"
+            ).textContent =
+                order.name || "—";
+
+
+            document.getElementById(
+                "customerEmail"
+            ).textContent =
+                order.email || "—";
+
+
+            document.getElementById(
+                "userId"
+            ).textContent =
+                order.user_id || "—";
+
+
+            // ORDER INFO
+
+            document.getElementById(
+                "orderIdDisplay"
+            ).textContent =
+                "#" + order.id;
+
+
+            const date =
+                order.created_at
+                    ? new Date(
+                        order.created_at
+                    ).toLocaleString()
+                    : "—";
+
+
+            document.getElementById(
+                "orderDate"
+            ).textContent =
+                date;
+
+
+            document.getElementById(
+                "statusSelect"
+            ).value =
+                order.status;
+
+
+            // SHIPPING ADDRESS
+
+            document.getElementById(
+                "shippingAddress"
+            ).textContent =
+                order.shipping_address ||
+                "No shipping address";
+
+
+            // PRODUCTS
+
+            const productsList =
+                document.getElementById(
+                    "productsList"
+                );
+
+
+            productsList.innerHTML = "";
+
+
+            if (items.length === 0) {
+
+                productsList.innerHTML =
+                    `<p style="color:#94a3b8;">
+                        No products found for this order.
+                    </p>`;
+
+            } else {
+
+                items.forEach(function(item) {
+
+                    const quantity =
+                        Number(item.quantity);
+
+                    const price =
+                        Number(item.price);
+
+                    const subtotal =
+                        quantity * price;
+
+
+                    const product =
+                        document.createElement(
+                            "div"
+                        );
+
+                    product.className =
+                        "product";
+
+
+                    product.innerHTML = `
+
+                        <div>
+
+                            <div class="product-name">
+                                ${item.product_name || "Unknown Product"}
+                            </div>
+
+                            <div class="product-meta">
+                                Quantity: ${quantity}
+                                ×
+                                Rs. ${price.toLocaleString()}
+                            </div>
+
+                        </div>
+
+                        <div class="product-price">
+                            Rs. ${subtotal.toLocaleString()}
+                        </div>
+
+                    `;
+
+
+                    productsList.appendChild(
+                        product
+                    );
+
+                });
+
+            }
+
+
+            // TOTAL
+
+            const total =
+                Number(order.total_amount);
+
+
+            document.getElementById(
+                "orderTotal"
+            ).textContent =
+                "Rs. " +
+                total.toLocaleString();
+
+
+            // SHOW CONTENT
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "content"
+            ).style.display =
+                "block";
+        }
+
+
+        // ==========================================
+        // UPDATE ORDER STATUS
+        // ==========================================
+
+        async function updateStatus(newStatus) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/api/admin/orders/${orderId}/status`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            credentials: "include",
+
+                            body: JSON.stringify({
+                                status: newStatus
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    alert(
+                        data.message ||
+                        "Failed to update status."
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "Order status updated successfully! ✅"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "STATUS UPDATE ERROR:",
+                    error
+                );
+
+                alert(
+                    "Server error while updating status."
+                );
+            }
+        }
+
+
+        // ==========================================
+        // START
+        // ==========================================
+
+        async function start() {
+
+            const loggedIn =
+                await checkAdmin();
+
+            if (!loggedIn) return;
+
+            await loadOrder();
+        }
+
+
+        start();
+
+    </script>
+
+</body>
+</html>
+```

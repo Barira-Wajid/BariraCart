@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Product | BariraCart</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+
+            <span>
+                BARIRA
+            </span>
+
+            <strong>
+                CART
+            </strong>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="index.html#products">
+                Products
+            </a>
+
+            <a href="index.html#categories">
+                Categories
+            </a>
+
+            <a href="index.html#about">
+                About
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="index.html"
+                class="secondary-btn"
+            >
+                ← Back
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= PRODUCT DETAILS ================= -->
+
+    <main class="product-details-page">
+
+        <div id="product-details">
+
+            <p class="loading-product">
+                Loading product...
+            </p>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        let quantity = 1;
+
+        let currentProduct = null;
+
+
+        // ================= LOAD PRODUCT =================
+
+        async function loadProduct() {
+
+            const container =
+                document.getElementById(
+                    "product-details"
+                );
+
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const productId =
+                params.get("id");
+
+
+            if (!productId) {
+
+                container.innerHTML = `
+
+                    <div class="error-message">
+
+                        Product not found.
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/products"
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                currentProduct =
+                    data.products.find(
+                        product =>
+                            product.id == productId
+                    );
+
+
+                if (!currentProduct) {
+
+                    container.innerHTML = `
+
+                        <div class="error-message">
+
+                            Product not found.
+
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+
+                // ================= PRODUCT HTML =================
+
+                container.innerHTML = `
+
+                    <div class="details-image">
+
+                        <img
+                            src="${currentProduct.image}"
+                            alt="${currentProduct.name}"
+                        >
+
+                    </div>
+
+
+                    <div class="details-content">
+
+
+                        <p class="product-category">
+
+                            ${currentProduct.category}
+
+                        </p>
+
+
+                        <h1>
+
+                            ${currentProduct.name}
+
+                        </h1>
+
+
+                        <p class="details-description">
+
+                            ${currentProduct.description}
+
+                        </p>
+
+
+                        <div class="details-price">
+
+                            Rs.
+
+                            ${Number(
+                                currentProduct.price
+                            ).toLocaleString()}
+
+                        </div>
+
+
+                        <p class="details-stock">
+
+                            ${currentProduct.stock}
+
+                            units available
+
+                        </p>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="quantity-box">
+
+                            <button
+                                onclick="changeQuantity(-1)"
+                            >
+                                −
+                            </button>
+
+
+                            <span id="quantity">
+
+                                1
+
+                            </span>
+
+
+                            <button
+                                onclick="changeQuantity(1)"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <!-- ADD TO CART -->
+
+                        <button
+                            class="details-cart-btn"
+                            onclick="addProductToCart()"
+                        >
+
+                            🛒 Add to Cart
+
+                        </button>
+
+
+                    </div>
+
+                `;
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                container.innerHTML = `
+
+                    <div class="error-message">
+
+                        Could not load product.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // ================= QUANTITY =================
+
+        function changeQuantity(amount) {
+
+            quantity += amount;
+
+
+            if (quantity < 1) {
+
+                quantity = 1;
+
+            }
+
+
+            if (
+                currentProduct &&
+                quantity > currentProduct.stock
+            ) {
+
+                quantity =
+                    currentProduct.stock;
+
+            }
+
+
+            document.getElementById(
+                "quantity"
+            ).textContent = quantity;
+
+        }
+
+
+
+        // ================= ADD TO CART =================
+
+        function addProductToCart() {
+
+            if (!currentProduct) {
+
+                return;
+
+            }
+
+
+            let cart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "bariraCart"
+                    )
+                ) || [];
+
+
+            const existingItem =
+                cart.find(
+                    item =>
+                        item.id ===
+                        currentProduct.id
+                );
+
+
+            if (existingItem) {
+
+                existingItem.quantity +=
+                    quantity;
+
+            } else {
+
+                cart.push({
+
+                    id:
+                        currentProduct.id,
+
+                    name:
+                        currentProduct.name,
+
+                    price:
+                        Number(
+                            currentProduct.price
+                        ),
+
+                    image:
+                        currentProduct.image,
+
+                    quantity:
+                        quantity
+
+                });
+
+            }
+
+
+            localStorage.setItem(
+
+                "bariraCart",
+
+                JSON.stringify(cart)
+
+            );
+
+
+            alert(
+
+                currentProduct.name +
+
+                " added to cart successfully! 🛒"
+
+            );
+
+        }
+
+
+
+        // ================= START =================
+
+        loadProduct();
+
+    </script>
+
+
+</body>
+
+</html>

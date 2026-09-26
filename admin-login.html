@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>BariraCart | Admin Login</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #312e81,
+                    transparent 40%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    #581c87,
+                    transparent 40%
+                ),
+                #080b14;
+
+            color: white;
+
+        }
+
+
+        .login-box {
+
+            width: 420px;
+
+            max-width: 90%;
+
+            padding: 40px;
+
+            border-radius: 24px;
+
+            background:
+                rgba(17, 24, 39, 0.85);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0, 0, 0, 0.5);
+
+            backdrop-filter: blur(20px);
+
+        }
+
+
+        .logo {
+
+            text-align: center;
+
+            font-size: 28px;
+
+            font-weight: 900;
+
+            margin-bottom: 8px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #a78bfa,
+                    #60a5fa
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 14px 16px;
+
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 15px;
+
+        }
+
+
+        input:focus {
+
+            border-color: #8b5cf6;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139, 92, 246, 0.12);
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #6366f1
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(124, 58, 237, 0.35);
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.7;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        #message {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            min-height: 20px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login-box">
+
+
+        <div class="logo">
+
+            🛒 BariraCart
+
+        </div>
+
+
+        <p class="subtitle">
+
+            Admin Control Panel
+
+        </p>
+
+
+        <form id="loginForm">
+
+
+            <label for="email">
+
+                Admin Email
+
+            </label>
+
+
+            <input
+                type="email"
+                id="email"
+                placeholder="admin@bariracart.com"
+                autocomplete="username"
+                required
+            >
+
+
+            <label for="password">
+
+                Password
+
+            </label>
+
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                id="loginButton"
+            >
+
+                🔐 Login to Dashboard
+
+            </button>
+
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        // ==================================================
+        // ELEMENTS
+        // ==================================================
+
+        const form =
+            document.getElementById("loginForm");
+
+        const message =
+            document.getElementById("message");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+
+
+        // ==================================================
+        // LOGIN
+        // ==================================================
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                message.textContent =
+                    "Logging in...";
+
+                message.style.color =
+                    "#a78bfa";
+
+
+                loginButton.disabled =
+                    true;
+
+
+                try {
+
+
+                    // ======================================
+                    // SEND LOGIN REQUEST
+                    // ======================================
+
+                    const response =
+                        await fetch(
+                            "/api/admin/login",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                credentials: "include",
+
+                                body:
+                                    JSON.stringify({
+
+                                        email:
+                                            email,
+
+                                        password:
+                                            password
+
+                                    })
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    console.log(
+                        "LOGIN RESPONSE:",
+                        data
+                    );
+
+
+                    // ======================================
+                    // LOGIN SUCCESS
+                    // ======================================
+
+                    if (data.success) {
+
+
+                        message.textContent =
+                            "Login successful!";
+
+                        message.style.color =
+                            "#4ade80";
+
+
+                        // Give the browser a moment
+                        // to store the session cookie
+
+                        setTimeout(
+                            function () {
+
+                                window.location.href =
+                                    "/admin-dashboard.html";
+
+                            },
+                            300
+                        );
+
+
+                    }
+
+                    // ======================================
+                    // LOGIN FAILED
+                    // ======================================
+
+                    else {
+
+                        message.textContent =
+                            data.message ||
+                            "Login failed.";
+
+                        message.style.color =
+                            "#f87171";
+
+
+                        loginButton.disabled =
+                            false;
+
+                    }
+
+
+                }
+
+                catch (error) {
+
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "Could not connect to server.";
+
+                    message.style.color =
+                        "#f87171";
+
+
+                    loginButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

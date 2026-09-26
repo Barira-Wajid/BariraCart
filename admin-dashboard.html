@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BariraCart | Admin Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            background: #080b14;
+
+            color: #f8fafc;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #111827,
+                    #080b14
+                );
+
+            border-right:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            padding: 28px 18px;
+
+            z-index: 100;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding:
+                0 12px 30px;
+
+            font-size: 23px;
+
+            font-weight: 900;
+
+        }
+
+
+        .brand-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(124,58,237,0.35);
+
+        }
+
+
+        .brand span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #c4b5fd,
+                    #60a5fa
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color:
+                transparent;
+
+        }
+
+
+        .menu-title {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            padding:
+                0 14px 10px;
+
+        }
+
+
+        .nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+
+        .nav button {
+
+            width: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            color: #94a3b8;
+
+            text-align: left;
+
+            padding: 13px 14px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.25s;
+
+        }
+
+
+        .nav button:hover,
+        .nav button.active {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(124,58,237,0.25),
+                    rgba(99,102,241,0.08)
+                );
+
+        }
+
+
+        .nav button.active {
+
+            border-left:
+                3px solid #8b5cf6;
+
+        }
+
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 18px;
+            right: 18px;
+
+        }
+
+
+        .logout button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(248,113,113,0.2);
+
+            background:
+                rgba(248,113,113,0.06);
+
+            color: #fca5a5;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 30px;
+
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .welcome h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .welcome p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        .admin-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                8px 13px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 14px;
+
+        }
+
+
+        .avatar {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #6366f1
+                );
+
+            font-weight: 800;
+
+        }
+
+
+        .admin-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .admin-info span {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+        }
+
+
+        /* ================= STAT CARDS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .stat-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #0d111c
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            transition: 0.3s;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(139,92,246,0.35);
+
+        }
+
+
+        .stat-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                rgba(139,92,246,0.12);
+
+            margin-bottom: 18px;
+
+            font-size: 20px;
+
+        }
+
+
+        .stat-card p {
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .stat-card h2 {
+
+            font-size: 28px;
+
+        }
+
+
+        .stat-card small {
+
+            display: block;
+
+            margin-top: 8px;
+
+            color: #4ade80;
+
+            font-size: 11px;
+
+        }
+
+
+        /* ================= CONTENT GRID ================= */
+
+        .content-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.5fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        .panel {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #0d111c
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+        }
+
+
+        .panel-header {
+
+            padding: 20px 22px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+
+        }
+
+
+        .panel-header h3 {
+
+            font-size: 16px;
+
+        }
+
+
+        .view-all {
+
+            color: #a78bfa;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= ORDERS ================= */
+
+        .orders {
+
+            width: 100%;
+
+            border-collapse:
+                collapse;
+
+        }
+
+
+        .orders th {
+
+            text-align: left;
+
+            padding: 13px 20px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .orders td {
+
+            padding: 15px 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.04);
+
+            font-size: 12px;
+
+        }
+
+
+        .status {
+
+            display: inline-block;
+
+            padding:
+                5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .pending {
+
+            color: #fbbf24;
+
+            background:
+                rgba(251,191,36,0.1);
+
+        }
+
+
+        .processing {
+
+            color: #60a5fa;
+
+            background:
+                rgba(96,165,250,0.1);
+
+        }
+
+
+        .delivered {
+
+            color: #4ade80;
+
+            background:
+                rgba(74,222,128,0.1);
+
+        }
+
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .quick-actions {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            padding: 20px;
+
+        }
+
+
+        .quick-action {
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: white;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            transition: 0.25s;
+
+        }
+
+
+        .quick-action:hover {
+
+            background:
+                rgba(124,58,237,0.12);
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .quick-action span {
+
+            display: block;
+
+            font-size: 23px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .quick-action strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .quick-action small {
+
+            color: #64748b;
+
+            font-size: 10px;
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            .content-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                width: 70px;
+
+                padding: 20px 10px;
+
+            }
+
+
+            .brand {
+
+                justify-content: center;
+
+                padding-left: 0;
+
+                padding-right: 0;
+
+            }
+
+
+            .brand span,
+            .menu-title,
+            .nav button span,
+            .logout-text {
+
+                display: none;
+
+            }
+
+
+            .nav button {
+
+                text-align: center;
+
+                padding: 14px 5px;
+
+            }
+
+
+            .logout {
+
+                left: 10px;
+                right: 10px;
+
+            }
+
+
+            .main {
+
+                margin-left: 70px;
+
+                padding: 20px;
+
+            }
+
+
+            .topbar {
+
+                align-items:
+                    flex-start;
+
+                gap: 15px;
+
+            }
+
+
+            .welcome h1 {
+
+                font-size: 23px;
+
+            }
+
+
+            .admin-info {
+
+                display: none;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .topbar {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .admin-profile {
+
+                width: 100%;
+
+            }
+
+
+            .quick-actions {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .orders {
+
+                min-width: 550px;
+
+            }
+
+
+            .panel {
+
+                overflow-x: auto;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🛒
+            </div>
+
+            <span>
+                BARIRACART
+            </span>
+
+        </div>
+
+
+        <div class="menu-title">
+            MANAGEMENT
+        </div>
+
+
+        <div class="nav">
+
+            <button class="active">
+                📊 <span>Dashboard</span>
+            </button>
+
+          <button onclick="window.location.href='admin-orders.html'">
+    📦 <span>Orders</span>
+</button>
+
+           <button onclick="window.location.href='admin-products.html'">
+    🛍️ <span>Products</span>
+</button>
+
+            <button onclick="comingSoon('Customers')">
+                👥 <span>Customers</span>
+            </button>
+
+            <button onclick="comingSoon('Analytics')">
+                📈 <span>Analytics</span>
+            </button>
+
+        </div>
+
+
+        <div class="logout">
+
+            <button onclick="logout()">
+
+                🚪
+
+                <span class="logout-text">
+                    Logout
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="welcome">
+
+                <h1>
+                    Dashboard 👋
+                </h1>
+
+                <p>
+                    Here's what's happening
+                    with your store today.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="avatar">
+                    BW
+                </div>
+
+                <div class="admin-info">
+
+                    <strong id="adminName">
+                        Loading...
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🛍️
+                </div>
+
+                <p>
+                    Total Orders
+                </p>
+
+                <h2 id="totalOrders">
+                    ...
+                </h2>
+
+                <small>
+                    All orders
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <p>
+                    Total Sales
+                </p>
+
+                <h2 id="totalSales">
+                    Rs. ...
+                </h2>
+
+                <small>
+                    From all orders
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <p>
+                    Pending Orders
+                </p>
+
+                <h2 id="pendingOrders">
+                    ...
+                </h2>
+
+                <small>
+                    Need attention
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+                <p>
+                    Products
+                </p>
+
+                <h2 id="totalProducts">
+                    ...
+                </h2>
+
+                <small>
+                    In your catalog
+                </small>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- RECENT ORDERS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Recent Orders
+                    </h3>
+
+                    <span
+                        class="view-all"
+                       onclick="window.location.href='admin-orders.html'"
+                    >
+                        View all →
+                    </span>
+
+                </div>
+
+
+                <div style="overflow-x:auto">
+
+                    <table class="orders">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ORDER
+                                </th>
+
+                                <th>
+                                    CUSTOMER
+                                </th>
+
+                                <th>
+                                    TOTAL
+                                </th>
+
+                                <th>
+                                    STATUS
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="recentOrders">
+
+                            <tr>
+
+                                <td colspan="4"
+                                    style="
+                                    text-align:center;
+                                    color:#64748b;
+                                    padding:30px;
+                                    "
+                                >
+                                    Loading orders...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Quick Actions
+                    </h3>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <button
+                        class="quick-action"
+                        onclick="comingSoon('Add Product')"
+                    >
+
+                        <span>
+                            ➕
+                        </span>
+
+                        <strong>
+                            Add Product
+                        </strong>
+
+                        <small>
+                            Add new item
+                        </small>
+
+                    </button>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="comingSoon('Orders')"
+                    >
+
+                        <span>
+                            📦
+                        </span>
+
+                        <strong>
+                            Manage Orders
+                        </strong>
+
+                        <small>
+                            View customer orders
+                        </small>
+
+                    </button>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="comingSoon('Products')"
+                    >
+
+                        <span>
+                            🛍️
+                        </span>
+
+                        <strong>
+                            Products
+                        </strong>
+
+                        <small>
+                            Manage catalog
+                        </small>
+
+                    </button>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="comingSoon('Customers')"
+                    >
+
+                        <span>
+                            👥
+                        </span>
+
+                        <strong>
+                            Customers
+                        </strong>
+
+                        <small>
+                            View customers
+                        </small>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+  <script>
+
+// ==========================================
+// CHECK ADMIN LOGIN
+// ==========================================
+
+async function checkAdmin() {
+
+    try {
+
+        const response = await fetch(
+            "/api/admin/check",
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        console.log(
+            "ADMIN CHECK RESULT:",
+            data
+        );
+
+
+        // ======================================
+        // NOT LOGGED IN
+        // ======================================
+
+        if (!data.loggedIn) {
+
+            console.log(
+                "No admin session found."
+            );
+
+            window.location.href =
+                "/admin-login.html";
+
+            return;
+        }
+
+
+        // ======================================
+        // ADMIN LOGGED IN
+        // ======================================
+
+        console.log(
+            "Admin session verified!"
+        );
+
+
+        const adminName =
+            document.getElementById(
+                "adminName"
+            );
+
+
+        if (adminName && data.admin) {
+
+            adminName.textContent =
+                data.admin.name;
+
+        }
+
+
+        // ======================================
+        // LOAD DASHBOARD
+        // ======================================
+
+        loadDashboardStats();
+
+        loadRecentOrders();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin check error:",
+            error
+        );
+
+        /*
+         * IMPORTANT:
+         * Do NOT redirect here.
+         *
+         * If there is a temporary network
+         * problem, we don't want to kick
+         * the admin back to login.
+         */
+
+    }
+
+}
+
+
+// ==========================================
+// LOAD DASHBOARD STATISTICS
+// ==========================================
+
+async function loadDashboardStats() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/stats",
+                {
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DASHBOARD STATS:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            console.error(
+                data.message
+            );
+
+            return;
+
+        }
+
+
+        // ======================================
+        // TOTAL ORDERS
+        // ======================================
+
+        document.getElementById(
+            "totalOrders"
+        ).textContent =
+            data.totalOrders;
+
+
+        // ======================================
+        // TOTAL SALES
+        // ======================================
+
+        document.getElementById(
+            "totalSales"
+        ).textContent =
+            "Rs. " +
+            Number(
+                data.totalSales
+            ).toLocaleString();
+
+
+        // ======================================
+        // PENDING ORDERS
+        // ======================================
+
+        document.getElementById(
+            "pendingOrders"
+        ).textContent =
+            data.pendingOrders;
+
+
+        // ======================================
+        // TOTAL PRODUCTS
+        // ======================================
+
+        document.getElementById(
+            "totalProducts"
+        ).textContent =
+            data.totalProducts;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Dashboard stats error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// LOAD RECENT ORDERS
+// ==========================================
+
+async function loadRecentOrders() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/recent-orders",
+                {
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "RECENT ORDERS:",
+            data
+        );
+
+
+        // ======================================
+        // CORRECT TABLE ID
+        // ======================================
+
+        const tableBody =
+            document.getElementById(
+                "recentOrders"
+            );
+
+
+        if (!tableBody) {
+
+            console.error(
+                "recentOrders element not found."
+            );
+
+            return;
+
+        }
+
+
+        // ======================================
+        // NO ORDERS
+        // ======================================
+
+        if (
+            !data.success ||
+            !data.orders ||
+            data.orders.length === 0
+        ) {
+
+            tableBody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        style="
+                            text-align:center;
+                            color:#64748b;
+                            padding:30px;
+                        "
+                    >
+
+                        No orders found
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        // ======================================
+        // CLEAR LOADING MESSAGE
+        // ======================================
+
+        tableBody.innerHTML = "";
+
+
+        // ======================================
+        // ADD ORDERS
+        // ======================================
+
+        data.orders.forEach(
+            order => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                let statusClass =
+                    String(
+                        order.status || ""
+                    ).toLowerCase();
+
+
+                row.innerHTML = `
+
+                    <td>
+                        #${order.id}
+                    </td>
+
+
+                    <td>
+                        ${order.name || "Unknown Customer"}
+                    </td>
+
+
+                    <td>
+                        Rs.
+                        ${Number(
+                            order.total_amount
+                        ).toLocaleString()}
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}"
+                        >
+
+                            ${order.status}
+
+                        </span>
+
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Recent orders error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logout() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/logout",
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            window.location.href =
+                "/admin-login.html";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// COMING SOON
+// ==========================================
+
+function comingSoon(section) {
+
+    alert(
+        section +
+        " section is coming next! 🚀"
+    );
+
+}
+
+
+// ==========================================
+// START DASHBOARD
+// ==========================================
+
+checkAdmin();
+
+</script>
+
+</body>
+
+</html>
