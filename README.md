@@ -62,6 +62,26 @@ It includes product browsing, search, cart management, checkout, order processin
 
 ---
 
+## 📸 Project Screenshots
+
+### 🏠 Shopping Homepage
+
+![BariraCart Homepage](homepage.png)
+
+### 🎧 Products
+
+![BariraCart Products](products.png)
+
+### 🛒 Checkout
+
+![BariraCart Checkout](checkout.png)
+
+### 🔐 Admin Dashboard
+
+![BariraCart Admin Dashboard](admin-dashboard.png)
+
+---
+
 ## 💻 Technologies Used
 
 <p align="center">
@@ -120,6 +140,12 @@ BariraCart/
 ├── db.js
 │
 ├── package.json
+├── bariracart-banner.png
+├── homepage.png
+├── products.png
+├── checkout.png
+├── admin-dashboard.png
+│
 └── Product Images/
 ```
 
